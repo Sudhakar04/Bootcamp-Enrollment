@@ -1,0 +1,481 @@
+<template>
+    <!-- <template if:true={OnLoad}> -->
+      <template if:true={load}>
+        <div class="bg">
+            <div class="total">
+        <div class="front">
+        <p class="title">BOOTCAMP-2022</p>
+        <div class="input-field" >
+            <i class="fas fa-user">
+                <lightning-icon icon-name="utility:user" alternative-text="User" title="USER"></lightning-icon>
+            </i>
+            <input type="text"  class="input" value={fullname} required pattern="^[a-zA-Z ]*$" title="Please enter Alphabets."  onchange={handleInputName} />
+            <label>Username</label>
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock">
+                <lightning-icon icon-name="utility:phone_portrait"  title="Mobile"></lightning-icon>
+            </i>
+            <input type="text" class="input" value={number} title="only numbers allowed" required pattern="[6-9]{1}[0-9]{9}" maxlength="10" onchange={handleInputNumber}/>
+            <label>Mobile</label>
+          </div>
+          <input type="submit" value="ENROLL" class="buttn solid" onclick={submitAction} />
+        </div>          
+    </div>
+</div>
+   
+</template>
+
+    <template if:true={tile}> 
+      <div class="headin">
+          <span>
+          <lightning-icon icon-name="action:user" alternative-text="User" title="USER" size="medium"></lightning-icon> &nbsp;
+          <b>{fullname}</b></span>
+      </div>
+      <div>
+              <div class="tile1">
+                     
+                  <div class={personalstatuscolor}><div class="badge"> {personalstatus}</div> </div>
+                  <div class="div2">
+                      <span>
+                      <lightning-icon icon-name="action:info" class="persicon" size="small" title="Personal"></lightning-icon> &nbsp;</span>
+                      <span > 
+                          <p class="pd">Personal Details</p>
+                      <p>Personal Information</p> </span>
+              </div>
+                  <!--a href="#" class="View">View &raquo;</a-->
+                  <div class="div3">
+                      
+                  <button class="btn" onclick={personal}>VIEW </button>
+                  <lightning-icon icon-name="utility:chevronright" class="arrow" size="small" title="VIEW"></lightning-icon> 
+                   </div>
+              </div>
+
+              <div class="tile1">
+                     
+                  <div class={Educationalstatuscolor}><div class="badge">{Educationalstatus} </div> </div>
+                  <div class="div2">
+                      <span>
+                      <lightning-icon icon-name="action:description" class="persicon" size="small" title="EDUCATION"></lightning-icon> &nbsp;</span>
+                      <span > 
+                          <p class="pd">Educational Details</p>
+                      <p>Qualification Details</p> </span>
+              </div>
+                  <!--a href="#" class="View">View &raquo;</a-->
+                  <div class="div3">
+                      
+                  <button class="btn" onclick={Educational}>VIEW </button>
+                  <lightning-icon icon-name="utility:chevronright" class="arrow" size="small" title="VIEW"></lightning-icon> 
+                   </div>
+              </div>
+
+
+              <div class="tile1">
+                     
+                  <div class={PrevExpstatuscolor}><div class="badge">{PrevExpstatus} </div> </div>
+                  <div class="div2">
+                      <span>
+                      <lightning-icon icon-name="action:add_relationship" class="persicon" size="small" title="Experience"></lightning-icon> &nbsp;</span>
+                      <span > 
+                          <p class="pd">Experience Details</p>
+                      <p>Previous Experience</p> </span>
+              </div>
+                  <!--a href="#" class="View">View &raquo;</a-->
+                  <div class="div3">
+                      
+                  <button class="btn" onclick={PrevExp}>VIEW </button>
+                  <lightning-icon icon-name="utility:chevronright" class="arrow" size="small"  title="VIEW"></lightning-icon> 
+                   </div>
+              </div>
+
+
+
+              <div class="tile1">
+                     
+                  <div class={Refstatuscolor}><div class="badge">{Refstatus} </div> </div>
+                  <div class="div2">
+                      <span>
+                      <lightning-icon icon-name="action:new_group" class="persicon" size="small" title="REFERENCE"></lightning-icon> &nbsp;</span>
+                      <span > 
+                          <p class="pd">Reference Details</p>
+                      <p>Reference Details </p> </span>
+              </div>
+                  
+                  <div class="div3">
+                      
+                  <button class="btn" onclick={Referee}>VIEW </button>
+                  <lightning-icon icon-name="utility:chevronright" class="arrow" size="small" alternative-text="User" title="VIEW"></lightning-icon> 
+                   </div>
+              </div>
+              <div class="proceed">
+              <button class="btnproceed" onclick={proceed}>PROCEED TO SUMMARY</button>
+              </div>
+</div>
+        
+  </template>
+
+    <!-- ************************ Details ********************************* -->
+
+    <template if:true={tab}>
+        
+        <lightning-card>
+          <div class="UserInfo">
+            <span>
+            <lightning-icon icon-name="action:user" alternative-text="User" title="USER" size="medium"></lightning-icon> &nbsp;
+            <b>Name : {fullname}</b></span>
+        </div>
+        <lightning-tabset active-tab-value={activetabvalue}>
+            <!-- Personal Details Tab -->
+            <lightning-tab label="Personal Details" value="personalDet">
+              <div class="body">
+              <div class="slds-text-heading_small">Personal Details</div><br/>
+
+              &nbsp;&nbsp;
+              <lightning-button class="slds-p-around_small" label="About details" onclick={handleAboutDetails}  variant={aboutvariant}></lightning-button>
+              &nbsp;&nbsp;
+              <lightning-button class="slds-p-around_small" label="Address details" onclick={handleAddressDetails}  variant={addressvariant}></lightning-button><br/><br/>
+                        
+                        <template if:true={aboutdetails}>
+                          <div class="color">
+                          <div class="slds-text-heading_small"><lightning-icon icon-name="utility:resource_territory" size="small"></lightning-icon>&nbsp;&nbsp;About Details</div><br/>
+                          <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_3-of-6">
+                            <lightning-input name="FirstName" label="First Name :" type="text" value={FirstName} onchange={handleChangeFields} placeholder="First name" pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required></lightning-input><br/>  
+                          </div>
+                          <div class="slds-col slds-size_3-of-6">
+                            <lightning-input name="LastName" label="Last Name :" type="text" value={LastName} onchange={handleChangeFields} placeholder="Last name"  pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required></lightning-input><br/>
+                          </div>
+                          </div>
+                              <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_4-of-12">
+                                   <lightning-combobox label="Mobile no" value={value} options={mobileOptions}  required></lightning-combobox>
+                                  </div>
+                                  <div class="slds-col slds-size_8-of-12">
+                                  <lightning-input name="Phone" type="phone" label="" onchange={handleChangeFields}  value={Phone} placeholder="Enter Phone Number" pattern="^[6789]\d{9}$" message-when-pattern-mismatch="Enter a Valid Mobile Number" required ></lightning-input>
+                                </div>
+                              </div><br/>
+                       <lightning-input label="Email :" name="Email" type="text" value={Email} onchange={handleChangeFields} placeholder="Email"  pattern="^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$" message-when-pattern-mismatch="Enter a valid Email" required></lightning-input> <br/>
+                          
+                          <div class="slds-text-heading_small" style="font-style: italic;font-weight:bolder">Marital Status</div><br/>
+                                
+                                <div>
+                                  &nbsp;&nbsp;
+                                  <lightning-button class="slds-p-around_small" label="Married" onclick={handleMarried} variant={marriedvariant}></lightning-button>
+                                  &nbsp;&nbsp;
+                                  <lightning-button class="slds-p-around_small" icon-name="utility:user" label="Unmarried" onclick={handleUnmarried} variant={unmarriedvariant}></lightning-button>
+                                </div><br/>
+
+                                <template if:true={spouse}>
+                                    <lightning-input type="text" label="Spouse Name :" value={spouseName} placeholder="spouse name" onchange={handleSpouse}></lightning-input>
+                                </template>
+                              
+                                <template if:true={father}>
+                                    <lightning-input type="text" label="Father Name :" value={fatherName} placeholder="Father name" onchange={handleFather}></lightning-input>
+                                </template><br/>
+                                <lightning-button label="Next" onclick={HandlerAbout} variant="brand"></lightning-button>
+                          </div>
+                        </template>
+
+                        <template if:true={addressdetails}>
+                                <div class="color">
+                                  
+                                    <div class="slds-text-heading_small" style="font-style: italic;font-weight:bolder"><lightning-icon icon-name="utility:checkin" size="small"></lightning-icon>&nbsp;&nbsp;Address Details</div><br/>
+                                    &nbsp;&nbsp;
+                                    <lightning-button class="slds-p-around_small" icon-name="utility:home" size="medium" label="Current" onclick={handleCurrent}  variant={currentvariant}></lightning-button>
+                                    &nbsp;&nbsp;
+                                    <lightning-button class="slds-p-around_small" icon-name="utility:agent_home" size="medium" label="Permanent" onclick={handlePermanent}  variant={permanentvariant}></lightning-button><br/>
+                                    
+                                        <template if:true={Permanent}>
+                                            <div class="color">
+                                              <div class="slds-text-heading_small">Permanent Address</div><br/>
+                                              <div>
+                                                <lightning-radio-group name="radioGroup"
+                                                                      label=""
+                                                                      options={Addressoptions}
+                                                                      value={AddressRadio}
+                                                                      type="radio" onchange={handleAddressChange}>
+                                                </lightning-radio-group>
+                                              </div><br/><br/>
+                                              <div class="slds-grid slds-gutters">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input name="addressline1" type="text" label="Address Line1 :" value={addressline1} onchange={handleAddress} placeholder="Address Line1" ></lightning-input>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input name="addressline2" type="text" label="Address Line2 :" value={addressline2} onchange={handleAddress} placeholder="Address Line2" ></lightning-input>
+                                                </div>
+                                              </div><br/>
+                                              <div class="slds-grid slds-gutters">
+                                              <div class="slds-col slds-size_1-of-2">
+                                                <lightning-combobox
+                                                    name="state"
+                                                    label="State"
+                                                    value={state}
+                                                    options={stateOptions} onchange={handleAddress} placeholder="select state" >
+                                                </lightning-combobox>
+                                              </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="District" type="text" label="District :"  value={District} onchange={handleAddress} placeholder="District..." ></lightning-input>
+                                                </div>
+                                              </div><br/>
+                                              <div class="slds-grid slds-gutters">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="City" type="text" label="City :" value={City} onchange={handleAddress} placeholder="city name..." ></lightning-input> 
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="Postalcode" type="text" label="Postal code :" value={Postalcode} onchange={handleAddress} placeholder="xxx" ></lightning-input>
+                                                </div> 
+                                                </div><br/> 
+                                                  <!-- <input type="radio" name="info_only_on" value="yes"> Mark this as a mailling address -->
+                                                  <!-- <lightning-input name="Locality" type="text" label="Locality :" value={Locality} onchange={handleAddress} placeholder="Locality..." ></lightning-input><br/> -->
+                                            </div>  
+                                            </template>
+                                            
+                                            <template if:true={Current} >
+                                              <div class="color">
+                                                <div class="slds-text-heading_small">Current Address</div><br/>
+                                                <div class="slds-grid slds-gutters">
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="addresslinec" type="text" label="Address Line1 :" value={addresslinec} onchange={handleCurAddress} placeholder="Address Line1" ></lightning-input>
+                                                  </div>
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="addresslinec1" type="text" label="Address Line2 :" value={addresslinec1} onchange={handleCurAddress} placeholder="Address Line2" ></lightning-input>
+                                                  </div>
+                                                  </div><br/>
+                                                  <div class="slds-grid slds-gutters">
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-combobox
+                                                      name="state1"
+                                                      label="State"
+                                                      value={state1}
+                                                      options={stateOptions} onchange={handleCurAddress} placeholder="select state" >
+                                                  </lightning-combobox>
+                                                  </div>
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <!-- <lightning-input name="Locality1" type="text" label="Locality :" value={Locality1} onchange={handleCurAddress} placeholder="Locality..." ></lightning-input><br/> -->
+                                                  <lightning-input name="District1" type="text" label="District :"  value={District1} onchange={handleCurAddress} placeholder="District..." ></lightning-input>
+                                                </div></div><br/>
+                                                <div class="slds-grid slds-gutters">
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="City1" type="text" label="City :" value={City1} onchange={handleCurAddress} placeholder="city name..." ></lightning-input>
+                                                  </div>
+                                                  <div class="slds-col slds-size_1-of-2">
+                                                  <lightning-input name="Postalcode1" type="text" label="Postal code :" value={Postalcode1} onchange={handleCurAddress} placeholder="xxx" ></lightning-input>
+                                                  </div></div><br/><br/>  
+                                                  <!-- <lightning-button label="Submit" onclick={handlePD} class="slds-float_right" variant="brand"></lightning-button> -->
+                                                </div> 
+                                                 
+                                          </template>
+                                          <lightning-button label="Submit" onclick={HandlerAddress} variant="brand"></lightning-button>
+                                </div> 
+                            </template> <br/><br/> 
+
+            
+                
+              <lightning-layout horizontal-align="space">
+                  <lightning-layout-item flexibility="auto">
+                      <lightning-button label="Back" icon-name="utility:chevronleft" onclick={PersonalBack} variant="brand"></lightning-button>
+                  </lightning-layout-item>
+                  <lightning-layout-item flexibility="auto">
+                      <lightning-button label="Next" icon-name="utility:chevronright" onclick={PersonalNext} icon-position="right" variant="brand"></lightning-button>
+                  </lightning-layout-item>
+              </lightning-layout>
+              </div>
+            </lightning-tab>
+
+            <!-- Educational Details Tab -->
+
+            <lightning-tab label="Educational Details" value="EduDet">
+              <div class="body">
+  
+                <div class="Initial"><div class="slds-text-heading_small">Educational Details</div><br/>
+        
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <lightning-button label="Graduation" onclick={Graduation} variant={ugvariant}>
+                    </lightning-button>
+        
+                     &nbsp;&nbsp;
+                    <lightning-button label="Post Graduation" onclick={PostGraduation} variant={pgvariant}>
+                    </lightning-button>
+                    
+                  <br/><br/>
+        
+                <template if:true={UG}>
+                  <div class="ugbody">
+                    <div class="slds-text-heading_small" style="font-style: italic;font-weight:bolder"><lightning-icon icon-name="utility:education" size="medium"></lightning-icon>&nbsp;&nbsp;&nbsp;UG Details</div><br/><br/>
+                    <!-- <div class="slds-grid slds-gutters">
+                      <div class="slds-col slds-size_1-of-2"> -->
+                    <lightning-input type="text" name="UGIName" label="Institute Name" onchange={handleChange} value={uginame} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Institute Name" required></lightning-input><br/>
+                    <lightning-input type="text" name="UGICity" label="Institute City" onchange={handleChange} value={ugicity} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Institute City" required></lightning-input><br/>
+                    <lightning-combobox name="UGSYear" label="Start Year" value={ugsyear} options={UGoptions1} onchange={handleChange} required></lightning-combobox><br/>
+                    <lightning-combobox name="UGPYear" label="Passedout Year" value={ugpyear} options={UGoptions2} onchange={handleChange} required></lightning-combobox><br/>
+                    <lightning-input name="UGDegree" label="Type of Degree(BA/BSC/BCA/BE/BTECH)"  value={ugdegree} onchange={handleChange} pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Degree" required></lightning-input><br/><br/>
+                    <lightning-button label="Next" onclick={handleUG} variant="brand"></lightning-button>
+                  <!-- </div></div> -->
+                </div>
+                </template>
+                <template if:true={PG}>
+                  <div class="pgbody">
+                    <div class="slds-text-heading_small" style="font-style: italic;font-weight:bolder"><lightning-icon icon-name="utility:education" size="medium"></lightning-icon>&nbsp;&nbsp;&nbsp;PG Details</div><br/><br/>
+                    <!-- <div class="slds-grid slds-gutters">
+                      <div class="slds-col slds-size_1-of-2"> -->
+                    <lightning-input type="text"  name="PGIName" label="Institute Name" onchange={handleChange} value={pginame} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Institute Name" ></lightning-input><br/>
+                    <lightning-input type="text"  name="PGICity" label="Institute City" onchange={handleChange} value={pgicity} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Institute City"></lightning-input><br/>
+                    <lightning-combobox name="PGSYear" label="Start Year" value={pgsyear} options={PGoptions1} onchange={handleChange} ></lightning-combobox><br/>
+                    <lightning-combobox name="PGPYear" label="Passedout Year" value={pgpyear} options={PGoptions2} onchange={handleChange} ></lightning-combobox><br/>
+                    <lightning-input name="PGDegree" label="Type of Degree(MA/MSC/MCA/ME/MS/MTECH)" value={pgdegree} onchange={handleChange} pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Degree"></lightning-input><br/><br/>
+                    <lightning-button label="Submit" onclick={handlePG} variant="brand"></lightning-button>
+                  <!-- </div></div> -->
+                  </div>
+                </template>
+              </div>
+          
+          </div><br/><br/>
+
+          <lightning-layout horizontal-align="space">
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Back" icon-name="utility:chevronleft" onclick={EducationalBack} variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Next" icon-name="utility:chevronright" onclick={EducationalNext} icon-position="right" variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+            </lightning-tab>
+
+            <!-- Experience Details Tab -->
+
+            <lightning-tab label="Experience Details" value="PrevExpDet">
+              <div class="body"><br/>
+              <div>
+                &nbsp;&nbsp;
+                <lightning-button label="Experience" onclick={ExpHandler} variant={Expvariant}></lightning-button>
+                &nbsp;&nbsp;
+                <lightning-button label="Fresher" onclick={FresHandler} variant={Freshvariant}></lightning-button>
+               
+            </div><br/>
+          
+  
+          <template if:true={ifexp}>
+            <div class="EXP">
+            <div class="slds-m-around_x-small " >
+                <div class="slds-text-heading_small"><lightning-icon icon-name="utility:relate" size="medium"></lightning-icon>&nbsp;&nbsp;Experience Details</div><br/>
+                
+                <lightning-input name="prevorg" value={prevorg} type="text"  label="Previous Organisation" placeholder="Previous Organisation" onchange={PrevOrgHandler} pattern='^[a-zA-Z ]*$' message-when-pattern-mismatch="Please Enter a Valid Organisation Name" required></lightning-input> <br />
+                <lightning-input name="prevdes"  value={prevdes} type="text"  label="Previous designation" placeholder="Previous designation" onchange={PrevDesHandler}  pattern='^[a-zA-Z ]*$' message-when-pattern-mismatch="Please Enter a Valid Designation" required></lightning-input> <br />
+                <lightning-combobox
+                        name="exp"
+                        label="Years of experience"
+                        value={preexp}
+                        placeholder="Select exp years"
+                        options={preexpoptions}
+                        onchange={preExpHandler}>
+                        
+                </lightning-combobox><br/>
+                <lightning-button label="Next" variant="brand" onclick={ExperienceHandler}></lightning-button>
+              
+            </div><br/><br/>
+            
+             </div>    
+            </template>
+            <template if:true={iffresher}>
+              <div class="EXP">
+                <div class="slds-m-around_x-small " >
+                  <div class="slds-text-heading_small"><lightning-icon icon-name="utility:advertising" size="medium"></lightning-icon>&nbsp;&nbsp;Fresher Details</div><br />
+                    <lightning-input  name="skills"  type="text" value={skills} label="Any course completion" placeholder="Enter completion courses" required="true" onchange={yourccHandler}  ></lightning-input> <br />
+                    <lightning-input  name="certification"  type="text" value={certify} label="certifications" placeholder="your certifications"  onchange={yourcertHandler}  ></lightning-input> <br />
+                
+                <lightning-button label="Submit" variant="brand" onclick={FresherHandler}></lightning-button>
+              </div> <br/><br/>
+                </div>
+            </template>
+
+        
+
+        <lightning-layout horizontal-align="space">
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Back" icon-name="utility:chevronleft" onclick={ExperienceBack} variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Next" icon-name="utility:chevronright" onclick={ExperienceNext} icon-position="right" variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+      </div>
+            </lightning-tab>
+
+            <!-- Reference Details Tab -->
+
+            <lightning-tab label="Reference Details" value="RefDet">
+                <div class="body">
+            
+                    <div class="Initial"><div class="slds-text-heading_small">Reference Details</div><br/>
+                      &nbsp;&nbsp;
+                      <lightning-button label="Reference 1" onclick={Ref1} variant={ref1variant} icon-name="utility:user">
+                        
+                      </lightning-button>
+                      &nbsp;&nbsp;
+                     
+                      <lightning-button label="Reference 2" onclick={Ref2} variant={ref2variant} icon-name="utility:user">
+                      </lightning-button>
+                      
+                  <br/><br/>
+          
+                  <template if:true={R1}>
+                    <div class="ref1body">
+                      <div class="slds-text-heading_small" style="font-style:italic;font-weight:bolder;"><lightning-icon icon-name="utility:info_alt" size="small"></lightning-icon>&nbsp;&nbsp;Reference 1 Details</div><br/><br/>
+                      
+                      <lightning-input type="text" name="REFfname1" label="First Name" onchange={REFERENCE} value={reffname1} placeholder="Enter First Name" pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required></lightning-input><br/>
+                      <lightning-input type="text" name="REFlname1" label="Last Name" onchange={REFERENCE} value={reflname1} placeholder="Enter Last Name" pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required=""></lightning-input><br/>
+                      <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_4-of-12">
+                          <lightning-combobox label=" Mobile No" value={phonevalue1} options={phoneoptions1} onchange={handlephone1} required></lightning-combobox>
+                          </div>
+                          <div class="slds-col slds-size_8-of-12">
+                          <lightning-input type="phone" name="REFphone1" onchange={REFERENCE} value={refphone1} placeholder="Enter Phone Number" pattern="^[6789]\d{9}$" message-when-pattern-mismatch="Enter a Valid Mobile Number" required></lightning-input>
+                        </div>
+                      </div><br/>
+                      <lightning-input type="text" name="REForg1" label="Organization" onchange={REFERENCE} value={reforg1} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Organization Name"></lightning-input><br/>
+                      <lightning-input type="text" name="REFdesg1" label="Designation" onchange={REFERENCE} value={refdesg1} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Designation"></lightning-input><br/>
+                      <lightning-combobox name="REFrel1" label="Relationship with Applicant" value={refrel1} options={REFOptions1} onchange={REFERENCE} ></lightning-combobox><br/><br/>
+                    
+                      <lightning-button label="Next" onclick={handleREF1} variant="brand"></lightning-button>
+                    </div>
+                  </template>
+                  <template if:true={R2}>
+                    <div class="ref2body">
+                      <div class="slds-text-heading_small" style="font-style:italic;font-weight:bolder;"><lightning-icon icon-name="utility:info_alt" size="small"></lightning-icon>&nbsp;&nbsp;Reference 2 Details</div><br/><br/>
+                      
+                      <lightning-input type="text" name="REFfname2" label="First Name" onchange={REFERENCE} value={reffname2} placeholder="Enter First Name" pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required></lightning-input><br/>
+                      <lightning-input type="text" name="REFlname2" label="Last Name" onchange={REFERENCE} value={reflname2} placeholder="Enter Last Name" pattern="^[a-zA-Z]*$" message-when-pattern-mismatch="Enter a Valid Name" required></lightning-input><br/>
+                      <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_4-of-12">
+                          <lightning-combobox label="Mobile No" value={phonevalue2} options={phoneoptions2} onchange={handlephone2} required></lightning-combobox>
+                          </div>
+                          <div class="slds-col slds-size_8-of-12">
+                      <lightning-input type="phone" name="REFphone2" onchange={REFERENCE} value={refphone2} placeholder="Enter Phone Number" pattern="^[6789]\d{9}$" message-when-pattern-mismatch="Enter a Valid Mobile Number" required></lightning-input>
+                      </div>
+                      </div><br/>
+                      <lightning-input type="text" name="REForg2" label="Organization" onchange={REFERENCE} value={reforg2} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Organization Name"></lightning-input><br/>
+                      <lightning-input type="text" name="REFdesg2" label="Designation" onchange={REFERENCE} value={refdesg2} pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch="Enter a Valid Designation"></lightning-input><br/>
+                      <lightning-combobox name="REFrel2" label="Relationship with Applicant" value={refrel2} options={REFOptions2} onchange={REFERENCE} ></lightning-combobox><br/><br/>
+                    
+                      <lightning-button label="Submit" onclick={handleREF2} variant="brand"></lightning-button>
+                    </div>
+                                 
+                  </template>
+          
+                  </div>
+            </div>
+
+            <lightning-layout horizontal-align="space">
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Back" icon-name="utility:chevronleft" onclick={ReferenceBack} variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto">
+                <lightning-button label="Next" icon-name="utility:chevronright" onclick={ReferenceNext} icon-position="right" variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+            </lightning-tab>
+        </lightning-tabset><br/>
+        
+    </lightning-card>
+    </template>
+</template>

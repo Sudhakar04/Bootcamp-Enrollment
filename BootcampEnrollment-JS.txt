@@ -1,0 +1,856 @@
+import { LightningElement,wire,api } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+// import Name_Field from '@salesforce/schema/Enroll__c.Name';
+// import Phone_Field from '@salesforce/schema/Enroll__c.Phone__c';
+// import Email_Field from '@salesforce/schema/Enroll__c.Email__c';
+ import Enroller from '@salesforce/apex/GetEnrollValues.Enroller';
+ 
+ 
+export default class BootcampEnrollment extends LightningElement {
+
+    load=true;
+    tile=false;
+    tab=false;
+    
+    fullname='';
+    number='';
+    
+    personalstatus='PENDING';
+    Educationalstatus='PENDING';
+    PrevExpstatus='PENDING';
+    Refstatus='PENDING';
+    personalstatuscolor='slds-text-color_error';
+    Educationalstatuscolor='slds-text-color_error';
+    PrevExpstatuscolor='slds-text-color_error';
+    Refstatuscolor='slds-text-color_error';
+    recordID;
+    
+    
+    activetabvalue;
+    
+        handleInputName(event)
+        {
+            this.fullname=event.target.value;
+         }
+        handleInputNumber(event)
+        {
+            this.number=event.target.value;
+        }
+    submitAction(){
+           
+            const allValid = [...this.template.querySelectorAll('.input')]
+                .reduce((validSoFar, inputCmp) => {
+                            inputCmp.reportValidity();
+                            return validSoFar && inputCmp.checkValidity();
+                }, true);
+            if (allValid) {
+                //this.successHandler();
+                // Enroller({name:this.fullname,phone:this.number})
+             this.load=false;
+             this.tile=true;    
+            }  
+        }
+        personal()
+        {
+            this.activetabvalue='personalDet';
+            this.tab=true;
+            this.tile=false;
+            
+        }
+    
+        Educational()
+        {
+            this.activetabvalue='EduDet';
+            this.tab=true;
+            this.tile=false;
+        }
+
+        PrevExp()
+        {
+            this.activetabvalue='PrevExpDet';
+            this.tab=true;
+            this.tile=false;
+            
+        }
+    
+        // handlePrevExpSubmit()
+        // {
+        //     this.PrevExpstatus='COMPLETED'; 
+        //     this.PrevExpstatuscolor='slds-text-color_success';
+        //     this.tab=false;
+        //     this.tile=true;
+        // }
+        Referee()
+        {
+            this.activetabvalue='RefDet';
+            this.tab=true;
+            this.tile=false;
+        }
+    
+    // handleReferenceSubmit()
+    //     {
+    //         this.Refstatus='COMPLETED'; 
+    //         this.Refstatuscolor='slds-text-color_success';
+    //         this.tab=false;
+    //         this.tile=true;
+    //     }
+
+  // fields=[Name_Field,Phone_Field,Email_Field];
+
+
+    //From here, it belongs to Personal Details.
+
+    aboutvariant='brand';
+    addressvariant='';
+    permanentvariant='';
+    currentvariant='brand';
+    aboutdetails=true;
+    FirstName='';
+    LastName='';
+    Phone='';
+    Email='';
+    MaritalStatus;
+    spouseName;
+    fatherName;
+    addressdetails;
+    State;
+    addressline1;
+    addressline2;
+    City;
+    Postalcode;
+    District;
+    Locality;
+    Current=true;
+    Permanent=false;
+    Married;
+    Unmarried;
+    button;
+    value="+91";
+    spouse=false;
+    father=false;
+    marriedvariant='';
+    unmarriedvariant='';
+   
+    //state combobox
+    get stateOptions() {
+       return [
+        {label:'Andhra Pradesh',value:'Andhra Pradesh'},
+        { label: 'Telangana', value: 'Telangana' },
+        { label: 'Karnataka', value: 'Karnataka' },
+        { label: 'Tamilnadu', value: 'Tamilnadu' },
+    ];
+}
+
+//mobile combobox
+get mobileOptions() {
+    return [
+        { label: '+1',value: '+1'},
+        { label: '+91',value: '+91' },
+    ];
+}
+
+AddressRadio='';
+handleAddressChange(event)
+{
+    this.AddressRadio=event.detail.value;
+    if(this.AddressRadio==='Same As Current Address')
+    {
+        this.addressline1=this.addresslinec;
+        this.addressline2=this.addresslinec1;
+        this.state=this.state1;
+        this.District=this.District1;
+        this.City=this.City1;
+        this.Postalcode=this.Postalcode1;
+    }
+    else if(this.AddressRadio==='Enter New Address')
+    {
+        this.addressline1='';
+        this.addressline2='';
+        this.state='';
+        this.District='';
+        this.City='';
+        this.Postalcode='';
+    }
+}
+get Addressoptions() {
+    return [
+        { label: 'Same As Current Address', value: 'Same As Current Address' },
+        { label: 'Enter New Address', value:'Enter New Address' },
+    ];
+}
+
+       //aboutdetails
+       handleAboutDetails()
+       {
+           this.aboutdetails=true;
+           this.addressdetails=false;
+           this.aboutvariant='brand';
+           this.addressvariant='';
+       }
+
+    //Handle - About Details new
+    handleChangeFields(event)
+       {
+         if(event.target.name=='FirstName') this.FirstName=event.target.value;
+         if(event.target.name=='LastName') this.LastName = event.target.value;
+         if(event.target.name=='Phone') this.Phone = event.target.value;
+         if(event.target.name=='Email') this.Email = event.target.value;
+       }
+      
+       handleSpouse(event)
+       {
+           this.spouseName=event.target.value;
+       }
+       handleFather(event)
+       {
+           this.fatherName=event.target.value;
+       }
+    
+    handleMarried(){
+        this.spouse=true;
+        this.father=false;
+        this.marriedvariant='brand';
+        this.unmarriedvariant='';
+    }
+
+    handleUnmarried(event)
+    {
+        this.spouse=false;;
+        this.father=true;
+        this.marriedvariant='';
+        this.unmarriedvariant='brand';
+    }
+    HandlerAbout()
+    {
+        const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+            .reduce((validSoFar, inputField) => {
+                inputField.reportValidity();
+                return validSoFar && inputField.checkValidity();
+            }, true);
+            if(isInputsCorrect)
+            {
+                this.aboutdetails=false;
+                this.addressdetails=true;
+                this.aboutvariant='';
+                this.addressvariant='brand';
+            }
+    }
+    HandlerAddress()
+    {
+        
+        this.personalstatus='COMPLETED'; 
+        this.personalstatuscolor='slds-text-color_success';
+        this.activetabvalue='EduDet';
+        
+    }
+   
+
+    //handle address details
+    handleAddressDetails()
+    {
+     this.aboutdetails=false;
+     this.addressdetails=true;
+     this.aboutvariant='';
+     this.addressvariant='brand';
+    }
+
+    handleCurrent(event)
+    {
+        this.Current=true;
+        this.Permanent=false;
+        this.currentvariant='brand';
+        this.permanentvariant='';
+    }
+
+    handlePermanent(event){
+     this.Current=false;
+     this.Permanent=true;
+     this.currentvariant='';
+    this.permanentvariant='brand';
+    }
+
+    //handle permanent adressess
+
+    handleAddress(event){
+     if(event.target.name=='addressline1') this.addressline1=event.target.value;
+     if(event.target.name=='addressline2') this.addressline2 = event.target.value;
+     if(event.target.name=='state') this.state = event.detail.value;
+     if(event.target.name=='Locality') this.Locality = event.target.value;
+     if(event.target.name=='District') this.District = event.target.value;
+     if(event.target.name=='City') this.City = event.target.value;
+     if(event.target.name=='Postalcode') this.Postalcode = event.target.value;
+    }
+    State1;
+    addresslinec;
+    addresslinec1;
+    City1;
+    Postalcode1;
+    District1;
+    Locality1;
+
+handleCurAddress(event)
+    {
+        if(event.target.name=='addresslinec') this.addresslinec=event.target.value;
+        if(event.target.name=='addresslinec1') this.addresslinec1 = event.target.value;
+        if(event.target.name=='state1') this.state1 = event.detail.value;
+        if(event.target.name=='Locality1') this.Locality1 = event.target.value;
+        if(event.target.name=='District1') this.District1 = event.target.value;
+        if(event.target.name=='City1') this.City1 = event.target.value;
+        if(event.target.name=='Postalcode1') this.Postalcode1 = event.target.value;
+    }
+
+
+    PersonalBack()
+    {
+        this.load=false;
+        this.tile=true;
+        this.tab=false;
+
+    }
+    PersonalNext()
+    {
+        this.load=false;
+        this.tile=false;
+        this.tab=true;
+        this.activetabvalue='EduDet';
+    }
+
+//From here, It belongs to Educational Details .
+    
+UG=true;
+PG=false;
+ugvariant='brand';
+pgvariant='';
+uginame;
+ugicity;
+ugsyear;
+ugpyear;
+ugdegree;
+
+pginame;
+pgicity;
+pgsyear;
+pgpyear;
+pgdegree;
+
+handleChange(event)
+{
+    if(event.target.name=='UGIName')
+    {
+        this.uginame=event.target.value;
+    }
+    if(event.target.name=='UGICity')
+    {
+        this.ugicity=event.target.value;
+    }
+    if(event.target.name=='UGSYear')
+    {
+        this.ugsyear=event.detail.value;
+    }
+    if(event.target.name=='UGPYear')
+    {
+        this.ugpyear=event.detail.value;
+    }
+    if(event.target.name=='UGDegree')
+    {
+        this.ugdegree=event.target.value;
+    }
+
+    if(event.target.name=='PGIName')
+    {
+        this.pginame=event.target.value;
+    }
+    if(event.target.name=='PGICity')
+    {
+        this.pgicity=event.target.value;
+    }
+    if(event.target.name=='PGSYear')
+    {
+        this.pgsyear=event.detail.value;
+    }
+    if(event.target.name=='PGPYear')
+    {
+        this.pgpyear=event.detail.value;
+    }
+    if(event.target.name=='PGDegree')
+    {
+        this.pgdegree=event.target.value;
+    }
+}
+Graduation()
+{
+    this.UG=true;
+    this.PG=false;
+    this.ugvariant='brand';
+    this.pgvariant='';
+}
+PostGraduation()
+{
+    this.PG=true;
+    this.UG=false;
+    this.ugvariant='';
+    this.pgvariant='brand';
+}
+
+handleUG()
+{
+    const isInputsCorrect1 = [...this.template.querySelectorAll('lightning-input')]
+            .reduce((validSoFar, inputField) => {
+                inputField.reportValidity();
+                return validSoFar && inputField.checkValidity();
+            }, true);
+    const isInputsCorrect2 = [...this.template.querySelectorAll('lightning-combobox')]
+            .reduce((validSoFar, inputField) => {
+                inputField.reportValidity();
+                return validSoFar && inputField.checkValidity();
+            }, true);        
+            if(isInputsCorrect1 && isInputsCorrect2)
+            {
+                
+                this.PG=true;
+                this.UG=false;
+                this.ugvariant='';
+                this.pgvariant='brand';
+                
+            }
+            
+    
+}
+
+handlePG()
+{
+
+    this.Educationalstatus='COMPLETED';
+    this.Educationalstatuscolor='slds-text-color_success';
+    this.activetabvalue='PrevExpDet';
+            
+}
+get UGoptions1()
+{
+    return [
+        {label:'2010',value:'2010'},
+        {label:'2011',value:'2011'},
+        {label:'2012',value:'2012'},
+        {label:'2013',value:'2013'},
+        {label:'2014',value:'2014'},
+        {label:'2015',value:'2015'},
+        {label:'2016',value:'2016'},
+        {label:'2017',value:'2017'},
+        {label:'2018',value:'2018'},
+        {label:'2019',value:'2019'},
+        {label:'2020',value:'2020'},
+        {label:'2021',value:'2021'},
+    ];
+}
+get UGoptions2()
+{
+    return [
+        {label:'2012',value:'2012'},
+        {label:'2013',value:'2013'},
+        {label:'2014',value:'2014'},
+        {label:'2015',value:'2015'},
+        {label:'2016',value:'2016'},
+        {label:'2017',value:'2017'},
+        {label:'2018',value:'2018'},
+        {label:'2019',value:'2019'},
+        {label:'2020',value:'2020'},
+        {label:'2021',value:'2021'},
+        {label:'2022',value:'2022'},
+        {label:'2023',value:'2023'},
+    ];
+}
+
+get PGoptions1()
+{
+    return [
+        {label:'2010',value:'2010'},
+        {label:'2011',value:'2011'},
+        {label:'2012',value:'2012'},
+        {label:'2013',value:'2013'},
+        {label:'2014',value:'2014'},
+        {label:'2015',value:'2015'},
+        {label:'2016',value:'2016'},
+        {label:'2017',value:'2017'},
+        {label:'2018',value:'2018'},
+        {label:'2019',value:'2019'},
+        {label:'2020',value:'2020'},
+        {label:'2021',value:'2021'},
+    ];
+    
+}
+get PGoptions2()
+{
+    return [
+        {label:'2012',value:'2012'},
+        {label:'2013',value:'2013'},
+        {label:'2014',value:'2014'},
+        {label:'2015',value:'2015'},
+        {label:'2016',value:'2016'},
+        {label:'2017',value:'2017'},
+        {label:'2018',value:'2018'},
+        {label:'2019',value:'2019'},
+        {label:'2020',value:'2020'},
+        {label:'2021',value:'2021'},
+        {label:'2022',value:'2022'},
+        {label:'2023',value:'2023'},
+    ];
+}
+EducationalBack()
+{
+    this.load=false;
+    this.tile=false;
+    this.tab=true;
+    this.activetabvalue='personalDet';
+}
+EducationalNext()
+{
+    this.load=false;
+    this.tile=false;
+    this.tab=true;
+    this.activetabvalue='PrevExpDet';
+}
+
+//From here, it belongs to Experience Details.
+
+
+
+ExperienceBack()
+{
+    this.load=false;
+    this.tile=false;
+    this.tab=true;
+    this.activetabvalue='EduDet';
+}
+ExperienceNext()
+{
+    this.load=false;
+    this.tile=false;
+    this.tab=true;
+    this.activetabvalue='RefDet';
+}
+
+        ifexp=true;
+        iffresher=false;
+    
+        preexp='';
+        prevorg='';
+        prevdes='';
+        skills='';
+        certify='';
+        Expvariant='brand';
+        Freshvariant='';
+    
+        ExpHandler()
+        {
+            this.iffresher=false;
+            this.ifexp=true;
+            this.Expvariant='brand';
+            this.Freshvariant='';
+        }
+    
+        PrevOrgHandler(event)
+        {
+            this.prevorg=event.target.value;
+        }
+        PrevDesHandler(event)
+        {
+            this.prevdes=event.target.value;
+        }
+        //combo for prevexperience
+        get preexpoptions() {
+            return [
+                { label: '0yrs to 3yrs', value: '[0yrs to 3yrs]' },
+                { label: '3yrs to 6yrs', value: '[3yrs to 6yrs]' },
+                { label: '6yrs to 9yrs', value: '[6yrs to 9yrs]' },
+                { label: '9yrs to 11yrs', value: '[9yrs to 11yrs]' },
+                { label: '11+', value: '[11+]' },
+                
+            ];
+        }
+        preExpHandler(event)
+        {
+            this.preexp=event.detail.value;
+        }
+        FresHandler()
+        {
+            this.ifexp=false;
+            this.iffresher=true;
+            this.Expvariant='';
+            this.Freshvariant='brand';
+        }
+        yourccHandler(event)
+        {
+            this.skills=event.target.value;
+        }
+        yourcertHandler(event)
+        {
+            this.certify=event.target.value;
+        }
+    
+        ExperienceHandler()
+        {
+            //console.log('i am entered in TBSEducational');
+            const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+                .reduce((validSoFar, inputCmp) =>
+                {
+                    inputCmp.reportValidity();
+                    return validSoFar && inputCmp.checkValidity();
+                }, true);
+            if(isInputsCorrect)
+             {
+               
+                this.PrevExpstatus='COMPLETED';
+                this.PrevExpstatuscolor='slds-text-color_success';
+                this.activetabvalue='RefDet';
+             }
+               
+        }
+
+        FresherHandler()
+        {
+            //console.log('i am entered in freshers');
+            const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+                        .reduce((validSoFar, inputField) => {
+                            inputField.reportValidity();
+                            return validSoFar && inputField.checkValidity();
+                        }, true);
+            if(isInputsCorrect)
+             {
+                //console.log("hello i am fresher");
+               
+                this.PrevExpstatus='COMPLETED';
+                this.PrevExpstatuscolor='slds-text-color_success';
+                this.activetabvalue='RefDet';
+             }       
+        }
+
+// From Here , it belongs to Reference Details.
+
+    R1=true;
+    R2=false;
+
+    reffname1;
+    reflname1;
+    refphone1;
+    reforg1;
+    refdesg1;
+    refrel1;
+    phonevalue1='+91 ';
+    phonevalue2='+91 ';
+
+
+    reffname2;
+    reflname2;
+    refphone2;
+    reforg2;
+    refdesg2;
+    refrel2;
+
+    ref1variant='brand';
+    ref2variant='';
+
+    REFERENCE(event)
+    {
+        if(event.target.name=='REFfname1')
+        {
+            this.reffname1=event.target.value;
+        }
+        if(event.target.name=='REFlname1')
+        {
+            this.reflname1=event.target.value;
+        }
+        if(event.target.name=='REFphone1')
+        {
+            this.refphone1=event.target.value;
+        }
+        if(event.target.name=='REForg1')
+        {
+            this.reforg1=event.target.value;
+        }
+        if(event.target.name=='REFdesg1')
+        {
+            this.refdesg1=event.target.value;
+        }
+        if(event.target.name=='REFrel1')
+        {
+            this.refrel1=event.detail.value;
+        }
+
+        if(event.target.name=='REFfname2')
+        {
+            this.reffname2=event.target.value;
+        }
+        if(event.target.name=='REFlname2')
+        {
+            this.reflname2=event.target.value;
+        }
+        if(event.target.name=='REFphone2')
+        {
+            this.refphone2=event.target.value;
+        }
+        if(event.target.name=='REForg2')
+        {
+            this.reforg2=event.target.value;
+        }
+        if(event.target.name=='REFdesg2')
+        {
+            this.refdesg2=event.target.value;
+        }
+        if(event.target.name=='REFrel2')
+        {
+            this.refrel2=event.detail.value;
+        }
+    }
+    handlephone1(event)
+    {
+        this.phonevalue1=event.detail.value;
+    }
+    handlephone2(event)
+    {
+        this.phonevalue2=event.detail.value;
+    }
+    Ref1()
+    {
+        this.R1=true;
+        this.R2=false;
+        this.ref1variant='brand';
+        this.ref2variant='';
+    }
+    Ref2()
+    {
+        this.R2=true;
+        this.R1=false;
+        this.ref1variant='';
+        this.ref2variant='brand';
+    }
+    handleREF1()
+    {
+        const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+                .reduce((validSoFar, inputField) => {
+                    inputField.reportValidity();
+                    return validSoFar && inputField.checkValidity();
+                }, true);
+        if(isInputsCorrect)
+        {
+            this.R1=false;
+            this.R2=true;
+            this.ref1variant='';
+            this.ref2variant='brand';
+        }
+        
+    }
+    handleREF2()
+    {
+       
+        const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+                .reduce((validSoFar, inputField) => {
+                    inputField.reportValidity();
+                    return validSoFar && inputField.checkValidity();
+                }, true);
+        if(isInputsCorrect)
+        {
+            
+        this.Refstatus='COMPLETED';
+        this.Refstatuscolor='slds-text-color_success';
+        this.tab=false;
+        this.tile=true;
+        
+        }
+        
+    }
+
+    get REFOptions1()
+    {
+        return [
+            {label:'Professional',value:'Professional'},
+            {label:'Other',value:'Other'},
+            
+        ];
+    }
+    get REFOptions2()
+    {
+        return [
+            {label:'Professional',value:'Professional'},
+            {label:'Other',value:'Other'},
+            
+        ];
+    }
+    get phoneoptions1()
+    {
+        return [
+            {label:'+1',value:'+1 '},
+            {label:'+91',value:'+91 '}
+        ];
+    }
+    get phoneoptions2()
+    {
+        return [
+            {label:'+1',value:'+1 '},
+            {label:'+91',value:'+91 '}
+        ];
+    }
+    ReferenceBack()
+    {
+        this.load=false;
+        this.tile=false;
+        this.tab=true;
+        this.activetabvalue='PrevExpDet';
+    }
+    ReferenceNext()
+    {
+        this.tab=false;
+        this.tile=true;
+
+    }
+    // InputValidation()
+    // {
+    //     const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
+    //             .reduce((validSoFar, inputField) => {
+    //                 inputField.reportValidity();
+    //                 return validSoFar && inputField.checkValidity();
+    //             }, true);
+    // }
+    // ComboValidation()
+    // {
+    //     const isInputsCorrect = [...this.template.querySelectorAll('lightning-combobox')]
+    //             .reduce((validSoFar, inputField) => {
+    //                 inputField.reportValidity();
+    //                 return validSoFar && inputField.checkValidity();
+    //             }, true);
+    // }
+
+    proceed()
+    {
+        Enroller({name:this.fullname,phone:this.number,uginame:this.uginame,ugicity:this.ugicity,ugsyear:this.ugsyear,ugpyear:this.ugpyear,ugdegree:this.ugdegree,
+                    pginame:this.pginame,pgicity:this.pgicity,pgsyear:this.pgsyear,pgpyear:this.pgpyear,pgdegree:this.pgdegree,
+                    r1fname:this.reffname1,r1lname:this.reflname1,r1mobile:this.refphone1,r1org:this.reforg1,r1desg:this.refdesg1,r1rel:this.refrel1,
+                    r2fname:this.reffname2,r2lname:this.reflname2,r2mobile:this.refphone2,r2org:this.reforg2,r2desg:this.refdesg2,r2rel:this.refrel2 })
+        this.successHandler();
+     
+    }
+
+    successHandler()
+    {
+        const evt=new ShowToastEvent
+            (
+                {
+                    title:'Success',
+                    message:'Values Submitted Successfully!!',
+                    variant:'success'
+                }
+            )
+            this.dispatchEvent(evt);
+    }
+    errorHandler()
+    {
+        const evt=new ShowToastEvent
+            (
+                {
+                    title:'Error',
+                    message:'Please Fill The Required Fields',
+                    variant:'error'
+                }
+            )
+            this.dispatchEvent(evt);
+    }
+}
